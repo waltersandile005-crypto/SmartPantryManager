@@ -28,7 +28,10 @@
             android:exported="false"
             android:label="@string/title_suggested_recipes" />
 
-
+        <activity
+            android:name=".RecipeDetailActivity"
+            android:exported="false"
+            android:label="@string/title_recipe_detail" />
 
 
 

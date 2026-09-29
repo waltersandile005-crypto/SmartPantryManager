@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * labelled "Almost There" list (missing exactly one ingredient) is shown below
  * it as the optional bonus feature - it is never mixed into the strict list.
  */
-public class SuggestedRecipesActivity extends AppCompatActivity {
+public class SuggestedRecipesActivity extends AppCompatActivity implements RecipeAdapter.Listener {
 
     private DatabaseHelper dbHelper;
     private RecipeAdapter suggestedAdapter;
@@ -38,12 +38,12 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         RecyclerView suggestedRecycler = findViewById(R.id.recyclerSuggested);
         suggestedRecycler.setLayoutManager(new LinearLayoutManager(this));
-        suggestedAdapter = new RecipeAdapter(dbHelper.getSuggestedRecipes());
+        suggestedAdapter = new RecipeAdapter(dbHelper.getSuggestedRecipes(), this);
         suggestedRecycler.setAdapter(suggestedAdapter);
 
         RecyclerView almostThereRecycler = findViewById(R.id.recyclerAlmostThere);
         almostThereRecycler.setLayoutManager(new LinearLayoutManager(this));
-        almostThereAdapter = new RecipeAdapter(dbHelper.getAlmostThereRecipes());
+        almostThereAdapter = new RecipeAdapter(dbHelper.getAlmostThereRecipes(), this);
         almostThereRecycler.setAdapter(almostThereAdapter);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation2);
@@ -78,5 +78,10 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         almostThereHeader.setVisibility(almostVisibility);
     }
 
-
+    @Override
+    public void onRecipeClicked(Recipe recipe) {
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, recipe.getId());
+        startActivity(intent);
+    }
 }
