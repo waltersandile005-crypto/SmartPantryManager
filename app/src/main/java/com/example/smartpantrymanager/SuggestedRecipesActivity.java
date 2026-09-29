@@ -23,7 +23,9 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private RecipeAdapter suggestedAdapter;
+    private RecipeAdapter almostThereAdapter;
     private TextView emptyView;
+    private TextView almostThereHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,17 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
         emptyView = findViewById(R.id.textNoSuggestions);
+        almostThereHeader = findViewById(R.id.textAlmostThereHeader);
 
         RecyclerView suggestedRecycler = findViewById(R.id.recyclerSuggested);
         suggestedRecycler.setLayoutManager(new LinearLayoutManager(this));
         suggestedAdapter = new RecipeAdapter(dbHelper.getSuggestedRecipes());
         suggestedRecycler.setAdapter(suggestedAdapter);
+
+        RecyclerView almostThereRecycler = findViewById(R.id.recyclerAlmostThere);
+        almostThereRecycler.setLayoutManager(new LinearLayoutManager(this));
+        almostThereAdapter = new RecipeAdapter(dbHelper.getAlmostThereRecipes());
+        almostThereRecycler.setAdapter(almostThereAdapter);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation2);
         bottomNav.setSelectedItemId(R.id.nav_suggested);
@@ -64,7 +72,10 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         suggestedAdapter.updateRecipes(suggested);
         emptyView.setVisibility(suggested.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
 
-
+        java.util.List<Recipe> almostThere = dbHelper.getAlmostThereRecipes();
+        almostThereAdapter.updateRecipes(almostThere);
+        int almostVisibility = almostThere.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE;
+        almostThereHeader.setVisibility(almostVisibility);
     }
 
 

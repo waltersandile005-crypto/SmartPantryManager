@@ -212,7 +212,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Bonus/stretch feature: recipes missing exactly one ingredient, kept
      * separate from the strict suggestions list as required by the brief.
      */
-
+    public List<Recipe> getAlmostThereRecipes() {
+        List<Recipe> result = new ArrayList<>();
+        List<PantryItem> pantry = getAllPantryItems();
+        for (Recipe recipe : getAllRecipes()) {
+            if (countMissingIngredients(recipe, pantry) == 1) {
+                result.add(recipe);
+            }
+        }
+        return result;
+    }
 
     /**
      * Counts how many of a recipe's required ingredients the pantry does NOT
