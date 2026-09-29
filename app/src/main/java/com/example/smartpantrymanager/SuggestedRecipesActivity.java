@@ -55,7 +55,9 @@ public class SuggestedRecipesActivity extends AppCompatActivity implements Recip
                 return true;
             } else if (id == R.id.nav_suggested) {
                 return true;
-
+            } else if (id == R.id.nav_settings) {
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             }
             return false;
         });

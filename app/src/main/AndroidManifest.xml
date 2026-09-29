@@ -33,7 +33,10 @@
             android:exported="false"
             android:label="@string/title_recipe_detail" />
 
-
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_settings" />
 
     </application>
 

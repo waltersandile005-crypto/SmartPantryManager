@@ -54,7 +54,9 @@ public class PantryListActivity extends AppCompatActivity implements PantryAdapt
             } else if (id == R.id.nav_suggested) {
                 startActivity(new Intent(this, SuggestedRecipesActivity.class));
                 return true;
-
+            } else if (id == R.id.nav_settings) {
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             }
             return false;
         });

@@ -8,5 +8,8 @@
         android:id="@+id/nav_suggested"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/nav_suggested" />
-
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/nav_settings" />
 </menu>
