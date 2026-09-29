@@ -18,7 +18,10 @@
             </intent-filter>
         </activity>
 
-
+        <activity
+            android:name=".AddEditIngredientActivity"
+            android:exported="false"
+            android:label="@string/title_add_edit_ingredient" />
 
 
 

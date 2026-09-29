@@ -42,7 +42,8 @@ public class PantryListActivity extends AppCompatActivity {
         adapter = new PantryAdapter(dbHelper.getAllPantryItems());
         recyclerView.setAdapter(adapter);
 
-
+        FloatingActionButton fab = findViewById(R.id.fabAddIngredient);
+        fab.setOnClickListener(v -> startActivity(new Intent(this, AddEditIngredientActivity.class)));
 
 
     }
