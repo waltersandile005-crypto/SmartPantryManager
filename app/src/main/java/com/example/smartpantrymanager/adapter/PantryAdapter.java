@@ -19,11 +19,17 @@ import java.util.List;
  */
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryViewHolder> {
 
+    public interface Listener {
+        void onItemClicked(PantryItem item);
+        void onDeleteClicked(PantryItem item);
+    }
 
     private List<PantryItem> items;
+    private final Listener listener;
 
-    public PantryAdapter(List<PantryItem> items) {
+    public PantryAdapter(List<PantryItem> items, Listener listener) {
         this.items = items;
+        this.listener = listener;
     }
 
     public void updateItems(List<PantryItem> newItems) {
@@ -50,6 +56,8 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         }
         holder.details.setText(qty);
 
+        holder.itemView.setOnClickListener(v -> listener.onItemClicked(item));
+        holder.deleteButton.setOnClickListener(v -> listener.onDeleteClicked(item));
     }
 
     private String trimTrailingZero(double value) {
@@ -67,11 +75,13 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
     static class PantryViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView details;
+        View deleteButton;
 
         PantryViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.textIngredientName);
             details = itemView.findViewById(R.id.textIngredientDetails);
+            deleteButton = itemView.findViewById(R.id.buttonDelete);
         }
     }
 }

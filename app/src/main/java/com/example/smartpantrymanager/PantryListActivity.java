@@ -21,7 +21,7 @@ import java.util.List;
  * Launcher screen: shows every ingredient currently in the pantry in a
  * RecyclerView, and is the entry point for adding, editing and deleting items.
  */
-public class PantryListActivity extends AppCompatActivity {
+public class PantryListActivity extends AppCompatActivity implements PantryAdapter.Listener {
 
     public static final String EXTRA_ITEM_ID = "extra_item_id";
 
@@ -39,7 +39,7 @@ public class PantryListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerPantry);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PantryAdapter(dbHelper.getAllPantryItems());
+        adapter = new PantryAdapter(dbHelper.getAllPantryItems(), this);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fabAddIngredient);
@@ -62,7 +62,17 @@ public class PantryListActivity extends AppCompatActivity {
         emptyView.setVisibility(items.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
     }
 
+    @Override
+    public void onItemClicked(PantryItem item) {
+        Intent intent = new Intent(this, AddEditIngredientActivity.class);
+        intent.putExtra(EXTRA_ITEM_ID, item.getId());
+        startActivity(intent);
+    }
 
-
-
+    @Override
+    public void onDeleteClicked(PantryItem item) {
+        dbHelper.deletePantryItem(item.getId());
+        Toast.makeText(this, R.string.msg_ingredient_deleted, Toast.LENGTH_SHORT).show();
+        refreshList();
+    }
 }

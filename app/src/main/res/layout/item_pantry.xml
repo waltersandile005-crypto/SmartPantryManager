@@ -29,6 +29,12 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-
+    <ImageButton
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/msg_ingredient_deleted"
+        android:src="@android:drawable/ic_menu_delete" />
 
 </LinearLayout>
