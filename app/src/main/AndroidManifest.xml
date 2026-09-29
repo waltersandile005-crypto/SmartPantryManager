@@ -23,7 +23,10 @@
             android:exported="false"
             android:label="@string/title_add_edit_ingredient" />
 
-
+        <activity
+            android:name=".SuggestedRecipesActivity"
+            android:exported="false"
+            android:label="@string/title_suggested_recipes" />
 
 
 

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.smartpantrymanager.model.PantryItem;
 import com.example.smartpantrymanager.model.Recipe;
 import com.example.smartpantrymanager.model.RecipeIngredient;
+import com.example.smartpantrymanager.util.IngredientMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -186,6 +187,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         c.close();
         return ingredients;
+    }
+
+    // ---------------------------------------------------------------------
+    // Strict-matching logic (Section 2.3 of the brief)
+    // ---------------------------------------------------------------------
+
+    /**
+     * Recipes where EVERY required ingredient is covered by the pantry.
+     * This is the list shown on the "Suggested Recipes" screen.
+     */
+    public List<Recipe> getSuggestedRecipes() {
+        List<Recipe> result = new ArrayList<>();
+        List<PantryItem> pantry = getAllPantryItems();
+        for (Recipe recipe : getAllRecipes()) {
+            if (countMissingIngredients(recipe, pantry) == 0) {
+                result.add(recipe);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Bonus/stretch feature: recipes missing exactly one ingredient, kept
+     * separate from the strict suggestions list as required by the brief.
+     */
+
+
+    /**
+     * Counts how many of a recipe's required ingredients the pantry does NOT
+     * currently cover, after normalising ingredient names and units. A recipe
+     * only belongs on the strict suggestions list when this returns 0.
+     */
+    private int countMissingIngredients(Recipe recipe, List<PantryItem> pantry) {
+        int missing = 0;
+        for (RecipeIngredient required : recipe.getIngredients()) {
+            String neededName = IngredientMatcher.normaliseName(required.getName());
+            boolean covered = false;
+            for (PantryItem pantryItem : pantry) {
+                String haveName = IngredientMatcher.normaliseName(pantryItem.getName());
+                if (haveName.equals(neededName)
+                        && IngredientMatcher.pantryCovers(
+                                pantryItem.getQuantity(), pantryItem.getUnit(),
+                                required.getQuantity(), required.getUnit())) {
+                    covered = true;
+                    break;
+                }
+            }
+            if (!covered) {
+                missing++;
+            }
+        }
+        return missing;
     }
 
     // ---------------------------------------------------------------------

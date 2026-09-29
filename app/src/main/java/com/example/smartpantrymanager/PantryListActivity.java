@@ -45,7 +45,19 @@ public class PantryListActivity extends AppCompatActivity implements PantryAdapt
         FloatingActionButton fab = findViewById(R.id.fabAddIngredient);
         fab.setOnClickListener(v -> startActivity(new Intent(this, AddEditIngredientActivity.class)));
 
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+        bottomNav.setSelectedItemId(R.id.nav_pantry);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_pantry) {
+                return true;
+            } else if (id == R.id.nav_suggested) {
+                startActivity(new Intent(this, SuggestedRecipesActivity.class));
+                return true;
 
+            }
+            return false;
+        });
     }
 
     @Override
